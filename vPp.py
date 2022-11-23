@@ -4,7 +4,7 @@ import pandas as pd
 import sqlite3
 from tqdm import tqdm
 
-class VirtualPowerPlant(object):
+class (object):
     def __init__(self, name):
 
 
@@ -18,19 +18,12 @@ class VirtualPowerPlant(object):
         self.buses_with_wind = []
         self.buses_with_storage = []
 
-    def add_component(self, component):
-
+    def (self, component):
         self.components[component.identifier] = component
 
-    def remove_component(self, component):
-
-
+    def (self, component):
         self.components.pop(component)
-
-    def export_components(self, environment):
-
-     
-
+    def (self, environment):
         df_timeseries = pd.DataFrame(
             index=pd.date_range(start=environment.start,
                                 end=environment.end,
@@ -163,7 +156,7 @@ class VirtualPowerPlant(object):
         return df_component_values, df_timeseries
 
 
-    def export_component_values(self):
+    def (self):
 
         df_component_values = pd.DataFrame(
             columns=("name",
@@ -270,7 +263,7 @@ class VirtualPowerPlant(object):
 
         return df_component_values
 
-    def export_component_timeseries(self):
+    def (self):
 
         df_timeseries = pd.DataFrame(
             columns=("time",
@@ -355,7 +348,7 @@ class VirtualPowerPlant(object):
         return df_timeseries, no_timeseries_lst
 
 
-    def export_components_to_sql(self, name = "export"):
+    def (self, name = "export"):
 
     
         conn = sqlite3.connect((r'./Results/' + name + '.sqlite'))
@@ -645,7 +638,7 @@ class VirtualPowerPlant(object):
         return no_timeseries_lst
 
 
-    def get_buses_with_components(
+    def (
         self,
         net,
         method="random",
@@ -768,7 +761,7 @@ class VirtualPowerPlant(object):
         else:
             raise ValueError("method ", method, " is invalid")
 
-    def balance_at_timestamp(self, timestamp):
+    def (self, timestamp):
 
 
         result = 0
