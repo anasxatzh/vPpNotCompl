@@ -4,20 +4,10 @@ import pandas as pd
 import pandapower as pp
 import pandapower.networks as pn
 
-
-from pPa_Lib.environment import env
-from pPa_Lib.user_profile import uProfile
-from pPa_Lib.photovoltaic import PV
-from pPa_Lib.battery_electric_vehicle import BatEV
-from pPa_Lib.electrical_energy_storage import ElEnStore
-from pPa_Lib.wind_power import wPower
-from pPa_Lib.virtual_power_plant import vPp
-from pPa_Lib.operator import op
-
 # environment
 start = "2021-03-01 00:00:00"
 end = "2021-03-01 23:45:00"
-timezone = "Europe/Berlin"
+timezone = ""
 year = "2021"
 
 # user_profile
@@ -50,7 +40,7 @@ fetch_curve = "power_curve"
 data_source = "oedb"
 
 # WindPower ModelChain data
-wind_file = "./input/wind/.csv"
+wind_file = ".csv"
 wind_speed_model = "logarithmic"
 density_model = "ideal_gas"
 temperature_model = "linear_gradient"
@@ -97,17 +87,11 @@ discharge_efficiency_storage = 0.98
 max_power = 4  # kW
 capacity = 4  # kWh
 max_c = 1  # factor between 0.5 and 1.2
-
-# %% define the amount of components in the grid
-# NOT VALID for all component distribution methods (see line 220-234)
-
 pv_percentage = 50
 storage_percentage = 50
 bev_percentage = 10
 hp_percentage = 10
 wind_percentage = 0
-
-# %% environment
 
 environment = Environment(
     timebase=timebase,
@@ -122,8 +106,6 @@ environment.get_wind_data(file=wind_file, utc=False)
 environment.get_pv_data(file=pv_file)
 environment.get_mean_temp_days(file=temp_days_file)
 environment.get_mean_temp_hours(file=temp_hours_file)
-
-# %% user profile
 
 user_profile = UserProfile(
     identifier=identifier,
@@ -141,20 +123,12 @@ user_profile = UserProfile(
 )
 
 user_profile.get_thermal_energy_demand()
-
-# %% create instance of VirtualPowerPlant and the designated grid
 vpp = VirtualPowerPlant("Master")
-
 net = pn.panda_four_load_branch()
-
-# %% assign names and types to baseloads for later p and q assignment
 for bus in net.bus.index:
 
     net.load.name[net.load.bus == bus] = net.bus.name[bus] + "_baseload"
     net.load.type[net.load.bus == bus] = "baseload"
-
-# %% assign components to random bus names
-
 
 def test_get_buses_with_components(vpp):
     vpp.get_buses_with_components(
@@ -166,10 +140,6 @@ def test_get_buses_with_components(vpp):
         wind_percentage=wind_percentage,
         storage_percentage=storage_percentage,
     )
-
-
-# %% assign components to the bus names for testing purposes
-
 
 def test_get_assigned_buses_with_components(
     vpp,
@@ -191,10 +161,6 @@ def test_get_assigned_buses_with_components(
     # storages should only be assigned to buses with pv
     vpp.buses_with_storage = buses_with_storage
 
-
-# %% assign components to the loadbuses
-
-
 def test_get_loadbuses_with_components(vpp):
 
     vpp.get_buses_with_components(
@@ -208,10 +174,6 @@ def test_get_loadbuses_with_components(vpp):
     )
 
 
-# %% Choose assignment methode for component distribution
-
-# test_get_buses_with_components(vpp)
-
 test_get_assigned_buses_with_components(
     vpp,
     buses_with_pv=["bus3", "bus4", "bus5", "bus6"],
@@ -220,10 +182,6 @@ test_get_assigned_buses_with_components(
     buses_with_storage=["bus5"],
     buses_with_wind=["bus1"],
 )
-
-# test_get_loadbuses_with_components(vpp)
-
-# %% create components and assign components to the Virtual Powerplant
 
 for bus in vpp.buses_with_pv:
 
@@ -336,9 +294,6 @@ for bus in vpp.buses_with_wind:
     )
 
     vpp.components[list(vpp.components.keys())[-1]].prepare_time_series()
-
-# %% create elements in the pandapower.net
-
 for bus in vpp.buses_with_pv:
 
     pp.create_sgen(
@@ -396,22 +351,14 @@ for bus in vpp.buses_with_wind:
         type="WindPower",
     )
 
-# %% initialize operator
-
 operator = Operator(virtual_power_plant=vpp, net=net, target_data=None)
 
-# %% run base_scenario without operation strategies
-
 net_dict = operator.run_base_scenario(baseload)
-
-# %% extract results from powerflow
 
 results = operator.extract_results(net_dict)
 single_result = operator.extract_single_result(
     net_dict, res="ext_grid", value="p_mw"
 )
-
-# %% plot results of powerflow and storage values
 
 single_result.plot(
     figsize=(16, 9), title="ext_grid from single_result function"
