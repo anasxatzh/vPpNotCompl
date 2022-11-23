@@ -16,7 +16,7 @@ timestamp_str = "2021-01-01 12:00:00"
 environment = Environment(start=start, end=end, timezone=timezone)
 
 environment.get_wind_data(
-    file="./input/wind/dwd_wind_data_2021.csv", utc=False
+    file=".csv", utc=False
 )
 
 # WindTurbineData
