@@ -2,16 +2,8 @@
 
 import matplotlib.pyplot as plt
 
-from pPa_Lib.environment import Environment
-from pPa_Lib.wind_power import WindPower
 
 
-
-start = "2021-01-01 00:00:00"
-end = "2021-01-31 23:45:00"
-timezone = "Europe/Thessaloniki"
-timestamp_int = 12
-timestamp_str = "2021-01-01 12:00:00"
 
 environment = Environment(start=start, end=end, timezone=timezone)
 
@@ -54,31 +46,19 @@ wind = WindPower(
 )
 
 
-def test_prepare_time_series(wind):
+def (wind):
 
     wind.prepare_time_series()
-    print("PrepTimeSeries:")
-    print(wind.timeseries.head())
     wind.timeseries.plot(figsize=(16, 9))
     plt.show()
 
-
-def test_value_for_timestamp(wind, timestamp):
+def (wind, timestamp):
 
     timestepvalue = wind.value_for_timestamp(timestamp)
-    print("\nTimeStampVal:\n", timestepvalue)
 
 
-def observations_for_timestamp(wind, timestamp):
+def (wind, timestamp):
 
-    print("ObsForTimeStamp:")
     observation = wind.observations_for_timestamp(timestamp)
-    print(observation, "\n")
 
 
-test_prepare_time_series(wind)
-test_value_for_timestamp(wind, timestamp_int)
-test_value_for_timestamp(wind, timestamp_str)
-
-observations_for_timestamp(wind, timestamp_int)
-observations_for_timestamp(wind, timestamp_str)
