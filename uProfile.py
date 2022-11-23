@@ -7,7 +7,7 @@ from pPa_Lib.wind_power import WindPower
 
 start = "2021-01-01 00:00:00"
 end = "2021-01-31 23:45:00"
-timezone = "Europe/Thessaloniki"
+timezone = ""
 timestamp_int = 12
 timestamp_str = "2015-01-01 12:00:00"
 
@@ -52,22 +52,21 @@ wind = WindPower(
 )
 
 
-def test_prepare_time_series(wind):
+def prepTimeSeries(wind):
 
     wind.prepare_time_series()
-    print("prepare_time_series:")
     print(wind.timeseries.head())
     wind.timeseries.plot(figsize=(16, 9))
     plt.show()
 
 
-def test_value_for_timestamp(wind, timestamp):
+def tstValForTimestamp(wind, timestamp):
 
     timestepvalue = wind.value_for_timestamp(timestamp)
-    print("\nvalue_for_timestamp:\n", timestepvalue)
+    print("\n valForTimeStamp:\n", timestepvalue)
 
 
-def observations_for_timestamp(wind, timestamp):
+def obsForTimesStamp(wind, timestamp):
 
     print("observations_for_timestamp:")
     observation = wind.observations_for_timestamp(timestamp)
