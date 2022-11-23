@@ -12,8 +12,6 @@ year = "2021"
 
 # user_profile
 identifier = "bus_1"
-latitude = 50.941357
-longitude = 6.958307
 yearly_thermal_energy_demand = 12500
 comfort_factor = None
 daily_vehicle_usage = None
@@ -130,7 +128,7 @@ for bus in net.bus.index:
     net.load.name[net.load.bus == bus] = net.bus.name[bus] + "_baseload"
     net.load.type[net.load.bus == bus] = "baseload"
 
-def test_get_buses_with_components(vpp):
+def (vpp):
     vpp.get_buses_with_components(
         net,
         method="random",
@@ -141,7 +139,7 @@ def test_get_buses_with_components(vpp):
         storage_percentage=storage_percentage,
     )
 
-def test_get_assigned_buses_with_components(
+def (
     vpp,
     buses_with_pv,
     buses_with_hp,
@@ -161,7 +159,7 @@ def test_get_assigned_buses_with_components(
     # storages should only be assigned to buses with pv
     vpp.buses_with_storage = buses_with_storage
 
-def test_get_loadbuses_with_components(vpp):
+def (vpp):
 
     vpp.get_buses_with_components(
         net,
