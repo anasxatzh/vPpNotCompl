@@ -39,8 +39,6 @@ class VirtualPowerPlant(object):
         )
 
         df_component_values = pd.DataFrame(index=[0])
-
-        print("Exporting components:")
         for component in tqdm(self.components.keys()):
             if '_pv' in component:
                 df_component_values[self.components[component].identifier + "_kWp"] = (
@@ -93,7 +91,6 @@ class VirtualPowerPlant(object):
                     self.components[component].identifier + "_arrival_soc"
                     ] = random.uniform(self.components[component].battery_min,
                                        self.components[component].battery_max)
-                #TODO: 
                 df_timeseries[self.components[component].identifier] = self.components[
                     component].timeseries["car_charger"]
 
